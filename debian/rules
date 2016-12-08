@@ -10,6 +10,11 @@
 
 export CFLAGS = -Wall -g -fPIC
 
+include /usr/share/dpkg/architecture.mk
+ifeq ($(origin CC),default)
+export CC = $(DEB_HOST_GNU_TYPE)-gcc
+endif
+
 ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
 	CFLAGS += -O0
 else
