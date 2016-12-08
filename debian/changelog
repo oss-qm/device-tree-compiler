@@ -1,7 +1,6 @@
 device-tree-compiler (1.4.0+dfsg-2.1) UNRELEASED; urgency=medium
 
-  * Non-maintainer upload.
-  * Fix FTCBFS: Export triplet-prefixed CC, closes: #-1
+  * Fix FTCBFS: Export triplet-prefixed CC, closes: #847457
 
  -- Helmut Grohne <helmut@subdivi.de>  Thu, 08 Dec 2016 12:23:03 +0100
 
