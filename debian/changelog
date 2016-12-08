@@ -1,8 +1,11 @@
-device-tree-compiler (1.4.0+dfsg-2.1) UNRELEASED; urgency=medium
+device-tree-compiler (1.4.2-1) unstable; urgency=medium
 
+  * New upstream release, closes: #839031
+
+  [ Helmut Grohne ]
   * Fix FTCBFS: Export triplet-prefixed CC, closes: #847457
 
- -- Helmut Grohne <helmut@subdivi.de>  Thu, 08 Dec 2016 12:23:03 +0100
+ -- Héctor Orón Martínez <zumbi@debian.org>  Thu, 08 Dec 2016 18:17:19 +0100
 
 device-tree-compiler (1.4.0+dfsg-2) unstable; urgency=medium
 
