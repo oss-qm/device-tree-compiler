@@ -4,7 +4,7 @@ Priority: extra
 Maintainer: Héctor Orón Martínez <zumbi@debian.org>
 Uploaders: Riku Voipio <riku.voipio@linaro.org>
 Standards-Version: 3.9.8
-Build-Depends: debhelper (>= 5), flex, bison, texlive, texlive-latex-extra
+Build-Depends: debhelper (>= 10), flex, bison, texlive, texlive-latex-extra
 Homepage: https://git.kernel.org/cgit/utils/dtc/dtc.git
 Vcs-Git: https://anonscm.debian.org/git/crosstoolchain/device-tree-compiler.git
 Vcs-Browser: https://anonscm.debian.org/cgit/crosstoolchain/device-tree-compiler.git/
