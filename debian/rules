@@ -26,7 +26,6 @@ build-arch: build-stamp
 build-indep: build-stamp
 build-stamp:
 	dh_testdir
-	QUILT_PATCHES=debian/patches quilt push -a || test $$? = 2
 	$(MAKE) CFLAGS="$(CFLAGS)"
 	$(MAKE) -C Documentation
 	touch build-stamp
@@ -38,8 +37,6 @@ clean1:
 	rm -f build-stamp install-stamp
 	$(MAKE) clean
 	[ ! -f Documentation/Makefile ] || $(MAKE) -C Documentation clean
-	QUILT_PATCHES=debian/patches quilt pop -a -R || test $$? = 2
-	rm -rf .pc
 	dh_clean
 
 install: build
