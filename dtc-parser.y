@@ -19,6 +19,7 @@
  */
 %{
 #include <stdio.h>
+#include <inttypes.h>
 
 #include "dtc.h"
 #include "srcpos.h"
@@ -31,7 +32,7 @@ extern void yyerror(char const *s);
 		treesource_error = true; \
 	} while (0)
 
-extern struct boot_info *the_boot_info;
+extern struct dt_info *parser_output;
 extern bool treesource_error;
 %}
 
@@ -52,9 +53,11 @@ extern bool treesource_error;
 	struct node *nodelist;
 	struct reserve_info *re;
 	uint64_t integer;
+	unsigned int flags;
 }
 
 %token DT_V1
+%token DT_PLUGIN
 %token DT_MEMRESERVE
 %token DT_LSHIFT DT_RSHIFT DT_LE DT_GE DT_EQ DT_NE DT_AND DT_OR
 %token DT_BITS
@@ -71,6 +74,8 @@ extern bool treesource_error;
 
 %type <data> propdata
 %type <data> propdataprefix
+%type <flags> header
+%type <flags> headers
 %type <re> memreserve
 %type <re> memreserves
 %type <array> arrayprefix
@@ -101,16 +106,32 @@ extern bool treesource_error;
 %%
 
 sourcefile:
-	  v1tag memreserves devicetree
+	  headers memreserves devicetree
 		{
-			the_boot_info = build_boot_info($2, $3,
-							guess_boot_cpuid($3));
+			parser_output = build_dt_info($1, $2, $3,
+			                              guess_boot_cpuid($3));
 		}
 	;
 
-v1tag:
+header:
 	  DT_V1 ';'
-	| DT_V1 ';' v1tag
+		{
+			$$ = DTSF_V1;
+		}
+	| DT_V1 ';' DT_PLUGIN ';'
+		{
+			$$ = DTSF_V1 | DTSF_PLUGIN;
+		}
+	;
+
+headers:
+	  header
+	| header headers
+		{
+			if ($2 != $1)
+				ERROR(&@2, "Header flags don't match earlier ones");
+			$$ = $1;
+		}
 	;
 
 memreserves:
@@ -150,10 +171,10 @@ devicetree:
 		{
 			struct node *target = get_node_by_ref($1, $3);
 
-			add_label(&target->labels, $2);
-			if (target)
+			if (target) {
+				add_label(&target->labels, $2);
 				merge_nodes(target, $4);
-			else
+			} else
 				ERROR(&@3, "Label or path %s not found", $3);
 			$$ = $1;
 		}

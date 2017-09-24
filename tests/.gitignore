@@ -8,6 +8,7 @@ tmp.*
 /asm_tree_dump
 /boot-cpuid
 /char_literal
+/check_path
 /del_node
 /del_property
 /dtbs_equal_ordered
@@ -35,6 +36,8 @@ tmp.*
 /nopulate
 /notfound
 /open_pack
+/overlay
+/overlay_bad_fixup
 /parent_offset
 /path-references
 /path_offset

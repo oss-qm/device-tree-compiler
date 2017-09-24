@@ -1,8 +1,8 @@
 /*
  * libfdt - Flat Device Tree manipulation
- *	Testcase for character literals in dtc
- * Copyright (C) 2006 David Gibson, IBM Corporation.
- * Copyright (C) 2011 The Chromium Authors. All rights reserved.
+ *	Testcase for DT overlays()
+ * Copyright (C) 2016 Free Electrons
+ * Copyright (C) 2016 NextThing Co.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public License
@@ -18,32 +18,53 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
  */
-#include <stdlib.h>
+
 #include <stdio.h>
-#include <string.h>
-#include <stdint.h>
 
 #include <libfdt.h>
 
 #include "tests.h"
-#include "testdata.h"
+
+#define CHECK(code, expected)					\
+	{							\
+		err = (code);					\
+		if (err != expected)				\
+			FAIL(#code ": %s", fdt_strerror(err));	\
+	}
+
+/* 4k ought to be enough for anybody */
+#define FDT_COPY_SIZE	(4 * 1024)
+
+static void *open_dt(char *path)
+{
+	void *dt, *copy;
+	int err;
+
+	dt = load_blob(path);
+	copy = xmalloc(FDT_COPY_SIZE);
+
+	/*
+	 * Resize our DTs to 4k so that we have room to operate on
+	 */
+	CHECK(fdt_open_into(dt, copy, FDT_COPY_SIZE), 0);
+
+	return copy;
+}
 
 int main(int argc, char *argv[])
 {
-	void *fdt;
-	fdt32_t expected_cells[5];
-
-	expected_cells[0] = cpu_to_fdt32((unsigned char)TEST_CHAR1);
-	expected_cells[1] = cpu_to_fdt32((unsigned char)TEST_CHAR2);
-	expected_cells[2] = cpu_to_fdt32((unsigned char)TEST_CHAR3);
-	expected_cells[3] = cpu_to_fdt32((unsigned char)TEST_CHAR4);
-	expected_cells[4] = cpu_to_fdt32((unsigned char)TEST_CHAR5);
+	void *fdt_base, *fdt_overlay;
+	int err;
 
 	test_init(argc, argv);
-	fdt = load_blob_arg(argc, argv);
+	if (argc != 3)
+		CONFIG("Usage: %s <base dtb> <overlay dtb>", argv[0]);
 
-	check_getprop(fdt, 0, "char-literal-cells",
-		      sizeof(expected_cells), expected_cells);
+	fdt_base = open_dt(argv[1]);
+	fdt_overlay = open_dt(argv[2]);
+
+	/* Apply the overlay */
+	CHECK(fdt_overlay_apply(fdt_base, fdt_overlay), -FDT_ERR_BADOVERLAY);
 
 	PASS();
 }

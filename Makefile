@@ -10,7 +10,7 @@
 #
 VERSION = 1
 PATCHLEVEL = 4
-SUBLEVEL = 2
+SUBLEVEL = 4
 EXTRAVERSION =
 LOCAL_VERSION =
 CONFIG_LOCALVERSION =
@@ -217,6 +217,12 @@ kup: dist
 	$(KUP) put ../dtc-$(dtc_version).tar.gz ../dtc-$(dtc_version).tar.sign \
 		$(KUPDIR)/dtc-$(dtc_version).tar.gz
 endif
+
+tags: FORCE
+	rm -f tags
+	find . \( -name tests -type d -prune \) -o \
+	       \( ! -name '*.tab.[ch]' ! -name '*.lex.c' \
+	       -name '*.[chly]' -type f -print \) | xargs ctags -a
 
 #
 # Testsuite rules
