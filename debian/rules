@@ -1,6 +1,10 @@
 #!/usr/bin/make -f
 # -*- makefile -*-
 
+# reproducible builds: texlive needs FORCE_SOURCE_DATE set in order to
+# respect SOURCE_DATE_EPOCH.
+export FORCE_SOURCE_DATE=1
+
 export DEB_BUILD_MAINT_OPTIONS=hardening=+all
 
 export CFLAGS = -Wall -g -fPIC
