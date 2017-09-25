@@ -1,3 +1,28 @@
+device-tree-compiler (1.4.4-1) unstable; urgency=medium
+
+  * New upstream release:
+    - Add DT Overlay support, closes: #863174.
+  * Documentation:
+    - Only install .pdf of documentation paper, dropping .ps and .dvi
+      versions.
+    - Add documentation about dts format and dt objects.
+  * Add debian/watch file.
+  * Switch to source/format: 3.0 (quilt).
+  * Switch to dh and debhelper compat level 10.
+  * debian/rules:
+    - Enabled hardening.
+    - Ensure texlive generated documentation does not embed timestamps,
+      closes: #876657.
+  * debian/control:
+    - Set Priority to optional.
+    - Set Standards-Version to 4.1.0.
+    - Add Vagrant Cascadian to Uploaders.
+    - Use https:// URLs for Vcs-*.
+  * debian/copyright:
+    - Switch to copyright-format 1.0.
+
+ -- Vagrant Cascadian <vagrant@debian.org>  Mon, 25 Sep 2017 09:10:56 -0700
+
 device-tree-compiler (1.4.2-1) unstable; urgency=medium
 
   * New upstream release, closes: #839031
