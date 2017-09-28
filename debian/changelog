@@ -1,3 +1,10 @@
+device-tree-compiler (1.4.5-1) unstable; urgency=medium
+
+  * New upstream release
+    (Closes: #877033)
+
+ -- Héctor Orón Martínez <zumbi@debian.org>  Fri, 29 Sep 2017 00:02:44 +0200
+
 device-tree-compiler (1.4.4-1) unstable; urgency=medium
 
   * New upstream release:
