@@ -36,3 +36,4 @@ override_dh_auto_install:
 override_dh_auto_clean:
 	dh_auto_clean
 	[ ! -f Documentation/Makefile ] || $(MAKE) -C Documentation clean
+	[ ! -d build ] || rm -rf build
