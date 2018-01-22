@@ -6,6 +6,11 @@ if [ -z "$CC" ]; then
     CC=gcc
 fi
 
+# stat differs between platforms
+if [ -z "$STATSZ" ]; then
+	STATSZ="stat -c %s"
+fi
+
 export QUIET_TEST=1
 STOP_ON_FAIL=0
 
@@ -114,7 +119,7 @@ run_wrap_error_test () {
 # $2: align base
 check_align () {
     shorten_echo "check_align $@:	"
-    local size=$(stat -c %s "$1")
+    local size=$($STATSZ "$1")
     local align="$2"
     (
 	if [ $(($size % $align)) -eq 0 ] ;then
@@ -204,6 +209,12 @@ libfdt_overlay_tests () {
     run_test check_path overlay_overlay_manual_fixups.test.dtb exists "/__local_fixups__"
 
     run_test overlay overlay_base_manual_symbols.test.dtb overlay_overlay_manual_fixups.test.dtb
+
+    # test simplified plugin syntax
+    run_dtc_test -@ -I dts -O dtb -o overlay_overlay_simple.dtb overlay_overlay_simple.dts
+
+    # verify non-generation of local fixups
+    run_test check_path overlay_overlay_simple.dtb not-exists "/__local_fixups__"
 
     # Bad fixup tests
     for test in $BAD_FIXUP_TREES; do
@@ -540,7 +551,10 @@ dtc_tests () {
     check_tests bad-name-property.dts name_properties
 
     check_tests bad-ncells.dts address_cells_is_cell size_cells_is_cell interrupt_cells_is_cell
-    check_tests bad-string-props.dts device_type_is_string model_is_string status_is_string
+    check_tests bad-string-props.dts device_type_is_string model_is_string status_is_string label_is_string compatible_is_string_list names_is_string_list
+    check_tests bad-chosen.dts chosen_node_is_root
+    check_tests bad-chosen.dts chosen_node_bootargs
+    check_tests bad-chosen.dts chosen_node_stdout_path
     check_tests bad-reg-ranges.dts reg_format ranges_format
     check_tests bad-empty-ranges.dts ranges_format
     check_tests reg-ranges-root.dts reg_format ranges_format
@@ -567,6 +581,10 @@ dtc_tests () {
 
     run_test check_path test_tree1.dtb exists "/subnode@1"
     run_test check_path test_tree1.dtb not-exists "/subnode@10"
+
+    check_tests pci-bridge-ok.dts -n pci_bridge
+    check_tests pci-bridge-bad1.dts pci_bridge
+    check_tests pci-bridge-bad2.dts pci_bridge
 
     # Check warning options
     run_sh_test dtc-checkfails.sh address_cells_is_cell interrupt_cells_is_cell -n size_cells_is_cell -- -Wno_size_cells_is_cell -I dts -O dtb bad-ncells.dts
@@ -704,7 +722,7 @@ fdtput_tests () {
     text=lorem.txt
 
     # Allow just enough space for $text
-    run_dtc_test -O dtb -p $(stat -c %s $text) -o $dtb $dts
+    run_dtc_test -O dtb -p $($STATSZ $text) -o $dtb $dts
 
     # run_fdtput_test <expected-result> <file> <node> <property> <flags> <value>
     run_fdtput_test "a_model" $dtb / model -ts "a_model"
@@ -723,7 +741,7 @@ fdtput_tests () {
     run_fdtput_test "$(cat $text $text)" $dtb /randomnode blob -ts "$(cat $text $text)"
 
     # Start again with a fresh dtb
-    run_dtc_test -O dtb -p $(stat -c %s $text) -o $dtb $dts
+    run_dtc_test -O dtb -p $($STATSZ $text) -o $dtb $dts
 
     # Node creation
     run_wrap_error_test $DTPUT $dtb -c /baldrick sod
@@ -751,7 +769,7 @@ fdtput_tests () {
     run_wrap_test $DTPUT $dtb -cp /chosen/son
 
     # Start again with a fresh dtb
-    run_dtc_test -O dtb -p $(stat -c %s $text) -o $dtb $dts
+    run_dtc_test -O dtb -p $($STATSZ $text) -o $dtb $dts
 
     # Node delete
     run_wrap_test $DTPUT $dtb -c /chosen/node1 /chosen/node2 /chosen/node3
