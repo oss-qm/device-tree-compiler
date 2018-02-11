@@ -27,7 +27,7 @@ endif
 	dh $@
 
 override_dh_auto_build:
-	dh_auto_build 
+	dh_auto_build
 	$(MAKE) -C Documentation
 
 override_dh_auto_install:
