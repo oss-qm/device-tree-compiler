@@ -2,8 +2,10 @@ device-tree-compiler (1.4.6-1) UNRELEASED; urgency=medium
 
   * New upstream release.
   * Drop patches applied upstream.
-  * Update debian/watch to use https://www.kernel.org/pub instead of
-    tarballs generated from tags.
+  * Update debian/watch:
+    - Use tarballs downloaded from https://www.kernel.org/pub instead of
+      generated tarballs from git tags.
+    - Check signature of downloaded tarball. Thanks to Osamu Aoki.
 
  -- Vagrant Cascadian <vagrant@debian.org>  Mon, 22 Jan 2018 22:32:29 -0800
 
