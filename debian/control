@@ -3,7 +3,7 @@ Section: devel
 Priority: optional
 Maintainer: Héctor Orón Martínez <zumbi@debian.org>
 Uploaders: Riku Voipio <riku.voipio@linaro.org>, Vagrant Cascadian <vagrant@debian.org>
-Standards-Version: 4.1.0
+Standards-Version: 4.1.3
 Build-Depends: debhelper (>= 11), flex, bison, texlive, texlive-latex-extra
 Homepage: https://git.kernel.org/cgit/utils/dtc/dtc.git
 Vcs-Git: https://anonscm.debian.org/git/crosstoolchain/device-tree-compiler.git
