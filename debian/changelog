@@ -6,6 +6,7 @@ device-tree-compiler (1.4.6-1) UNRELEASED; urgency=medium
     - Use tarballs downloaded from https://www.kernel.org/pub instead of
       generated tarballs from git tags.
     - Check signature of downloaded tarball. Thanks to Osamu Aoki.
+  * Use debhelper compat level 11.
 
  -- Vagrant Cascadian <vagrant@debian.org>  Mon, 22 Jan 2018 22:32:29 -0800
 
