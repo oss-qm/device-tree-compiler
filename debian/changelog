@@ -1,5 +1,6 @@
-device-tree-compiler (1.4.6-1) UNRELEASED; urgency=medium
+device-tree-compiler (1.4.6-1) unstable; urgency=medium
 
+  [ Vagrant Cascadian ]
   * New upstream release.
   * Drop patches applied upstream.
   * Update debian/watch:
@@ -12,7 +13,10 @@ device-tree-compiler (1.4.6-1) UNRELEASED; urgency=medium
   * Make build more verbose.
   * Use dpkg buildflags.mk, passing CFLAGS and CPPFLAGS to build.
 
- -- Vagrant Cascadian <vagrant@debian.org>  Mon, 22 Jan 2018 22:32:29 -0800
+  [ Dima Kogan ]
+  * Moved Vcs tags to point to salsa.
+
+ -- Vagrant Cascadian <vagrant@debian.org>  Thu, 26 Apr 2018 11:02:44 -0700
 
 device-tree-compiler (1.4.5-3) unstable; urgency=medium
 
