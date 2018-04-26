@@ -27,7 +27,7 @@ endif
 	dh $@
 
 override_dh_auto_build:
-	dh_auto_build
+	dh_auto_build -- V=1
 ifeq (,$(findstring nodoc,$(DEB_BUILD_OPTIONS)))
 	$(MAKE) -C Documentation
 endif
