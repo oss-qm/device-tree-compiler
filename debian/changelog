@@ -8,6 +8,7 @@ device-tree-compiler (1.4.6-1) UNRELEASED; urgency=medium
     - Check signature of downloaded tarball. Thanks to Osamu Aoki.
   * Use debhelper compat level 11.
   * Update to Standards-Version 4.1.4, no changes needed.
+  * Support "nodoc" in DEB_BUILD_PROFILES and DEB_BUILD_OPTIONS.
 
  -- Vagrant Cascadian <vagrant@debian.org>  Mon, 22 Jan 2018 22:32:29 -0800
 
